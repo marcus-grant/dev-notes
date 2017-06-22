@@ -1,0 +1,3 @@
+# Practical Uses for Python Decorators
+
+I find that one of the most overlooked python features is the decorator. A decorator is any tag following the `@` symbol, which is a built-in encapsulating function that defines common behaviour shared by many functions. Some of these come baked into the Python standard, such as the `@classmethod` decorator, which specifies a class method, meaning it gets called from the class in a general sense, as opposed from a class instance. Many modules come with them as well, for example, Flask has the `@app` decorator that provides boiler plate code you wouldn't want to constantly write ahead of whatever Flask action you intended to take to handle app specific functions like handling the routing of URLs to specific functions in Flask.
