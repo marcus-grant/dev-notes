@@ -7,7 +7,9 @@ My personal notes that I take whenever I learn new and notable things (although 
 *make sure all these have links pointing to their location in github*
 - [Dev Ops]()(Linux / Remote Mgmt. / BASH)
     - *BASH should have its own category later*
-- [Vim]()
+    - [KVM & QEMU Virtualization Basics](https://github.com/marcus-grant/dev-notes/blob/master/dev-ops/qemu-basic.md)
+- [Vim](https://github.com/marcus-grant/dev-notes/tree/master/vim)
+    - [Vim as BASH IDE](https://github.com/marcus-grant/dev-notes/blob/master/vim/bash-support-notes.md)
 - [Python]()(includes python web backends)
 - [HTML/CSS]()
 - [Javascript]()
