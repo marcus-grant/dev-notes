@@ -20,35 +20,36 @@ General security notes that I make along the way on securing my various personal
 
 
 ## VPN
-- [Digital Ocean's guide](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-openvpn-server-on-ubuntu-14-04) on this is quite good
-- main config should be located in `/etc/openvpn/server.con`
-- there are also decent configs in `/usr/share/doc/openvpn/examples/sample-config-giles`
-- only use them as templates, more work should be put into them to be truly secure
-  - `dh dh1024.pem` should be at least `dh dh2048.pem`
-    - doubles the RSA key length used for generating server and client keys
-    - these days 1024 using diffie helman is mediocre at best
-  - `push "redirect-gateway def1 bypass-dhcp"` should be uncommented
-    - This is to pass client's web traffic to its destination, so it simply becomes an endpoint and entrance to/from clients
-  - `push "dhcp-option DNS 208.67.222.222"` & `push "dhcp-option DNS 208.67.222.220"` should be uncommented
-    - This tells the server to push traffic through the [OpenDNS]() servers for DNS requrests
-    - Other DNSs can be specified
-    - Should this server become my own personal DNS?
-    - Should this server become a security gateway?
-    - Helps prevent DNS requests to leak outside VPN connection
-    - **NOTE** clients will also need DNS resolvers specified
-      - why? and how does dns works in vpn systems? **TODO**
-  - comment out these two lines so they look like `user nobody` & `group nogroup`
-    - By default openVPN runs as root, giving full root access, bad
-    - Instead give only unpriveleged user and group `nobody` & `nogroup` to openVPN
-      - Good for running untrusted applications like web facing servers
-      - Installed with openVPN install
-  - Should a different port be used than the default of 1194?
-- Next there need to be some `sysctl` changes to tell kernel to forward traffic from client devices to internet and back
-  - Without this traffic will get stuck on the server
-  - enter `echo 1 > /proc/sys/net/ipv4/ip_forward` to make sure it forwards these things on currently running system
-  - next make it permanent by editing some configs that will make this happen on next reboot as well
-  - in `/etc/sysctl.conf`
-    - uncomment `net.ipv4.ip_forward`
-- **UFW** needs to be configured so the firewall blocks the right stuff and permits you and only you
-  - Refer to DigitalOcean's [guide](http://do.co/1k71XXr) to setup a good cloud facing firewall config
-  -
+
+- [Digital Ocean's guide]() on this is quite good
+
+### Install Packages
+- Install packages `openvpn` & `easy-rsa`
+
+### Setup CA Directory
+- Use easy-rsa's `make-cadir ~/openvpn-ca`
+- Go to that folder
+
+### Configure CA Variables
+- edit the file `~/openvpn-ca/vars`
+  - edit the export variables as below:
+```
+export KEY_COUNTRY="US"
+export KEY_PROVINCE="NY"
+export KEY_CITY="NYC"
+export KEY_ORG="Pattern-Buffer"
+export KEY_EMAIL="marcus.grant@patternbuffer.io"
+export KEY_OU="PatternBuffer"
+
+# X509 Subject Field
+export KEY_NAME="server"                                                                                                         ```
+
+### Build Certificate Authority
+- in `~/openvpn-ca`...
+- `source vars`
+  - should see: something about ./clean-all
+
+  
+
+## References
+[easy-rsa-script]: https://github.com/OpenVPN/easy-rsa "Github for OpenVPN's easy-rsa scripts and software"
