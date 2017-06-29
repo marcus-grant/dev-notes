@@ -161,7 +161,92 @@ font-family: "Goudy Bookletter 1911", sans-serif
   - `type` defines its purpose, in this case `submit`
   - `<button type="submit">this button submits the form</button>`
   - These are also useful as nested elements to the `form` element
+- HTML5 can be used to rquire a field before submission is permitted
+  - `required` attributes in the `input` element handles this
+  - `required` doesn't have `=""` part to it
+  - `<input type="text" placeholder="cat photo URL" required>`
+- **Radio Buttons* Are selection elements that can be grouped to permit only one choice from a grouping
+  - They are a type of `input` where their `type` attribute specifies it as a `radio`
+  - They are nested inside `labels` where the text between the `label` tags define the button text
+  - A radio needs to have `name` attributes to name the group of radio buttons such that that group can only have one selection
+  - For the grouping to work, the `name` attribute must be the same between the entire group, otherwise they won't be exclusive within that group
+```html
+<label><input type="radio" name="indoor-outdoor">Indoor</label>
+<label><input type="radio" name="indoor-outdoor">Outdoor</label>
+```
+- **Checkboxes** are another `input` element type, where they aren't exclusive choices like their `radio` cousins
+  - the `name` attribute, again, defines what group they belong to, which matters more for how the data is submitted than how it is presented
+  - Also, they are usually contained within a `label` set of opening and closing tags with text for their display
+  - the `type` attribute is: `type="checkbox"`
+```html
+  <label><input type="checkbox" name="set">poop</label>
+  <label><input type="checkbox" name="set">pee</label>
+  <label><input type="checkbox" name="set">snot</label>
+```
+- **Default Checkbox/Radio Selections** can be specified using the `checked` attribute in the `input` tag
+
+### You Div!
+- This is probably the most commonly used element `<div>`
+- Not only do they imply division, and give the ability to divide the layout into sepereate sections...
+- They also act as abstract containers for the HTML elements they contain
+  - CSS classes can be passed to a div, thus making all other child elements inherit those CSS properties due to the nature of the hierarchy of nested HTML elements
+
+
+### ID Attributes
+- In addition to `class` attributes, it's possible to set an `id`
+- `id` elements should be unique
+- **Should** be unique to a single element
+  - Though some browsers support them not being unique, they absolutely should be
+- Unique identifier to reference an individual element
+- `<h2 id="cat-photo-app">` this particular element now has a unique id
+- `id`s can be styled as selectors
+- Unlike classes, `id`s within  CSS are referenced using `#` in place of the `.`
+```css
+selector#id1
+{
+  property: value;
+}
+```
+
+
+### Spacing Properties
+- 3 properties of HTML elements dictate the space around the element itself
+![element-spacing-propereties][slements-spacing-diagram]
+  - `padding`
+    - Nearest to the element, defines space between border & element
+    - Can be defined explicitly for each padding direction:
+      - `padding-top`
+      - `padding-right`
+      - `padding-bottom`
+      - `padding-left`
+    - Those properties can be defined in one line without explicitly referencing the directional property, by giving comma seperated values in the order above:
+      - `padding: 10px, 20px, 40px, 80px` : top = 10, right = 20, bottom = 40, left = 80
+    - If only `padding` is specified, and with only one value, all padding is that same value
+  - `border`
+    - As covered before, defines the stroke, or outline of an object and occupies the space between the bounding rectangle of the padding & margin
+    - `border-width`
+      - set by pixels ( `px` ) or by preset names: `thin`, `medium`, `thick`
+    - `border-color`
+      - set by name, ie `red`
+      - set by RGB: `rgb(255,0,0)`
+      - or hex value: `#ff0000`
+    - `border-style`
+      - `dotted` : dotted border
+      - `dashed` 
+      - `solid`
+      - `double` : two lines as borders that together have same width of the `border-width` property
+      - `groove` : a 3D grooved border, effect depends on color of border
+      - `ridge` : a 3D ridged border, again effect depends on color
+      - `inset` : 3D inset border, same as above
+      - `outse` : same as above but outset
+  - `margin`
+    - outer most spacing property around an HTML element, spacing from border to next element's margin
+    - can define the spacing of specific sides same as with `padding`
+    - can be serially defined in order of `top`, `right`, `bottom`, `left`
+    - no color property
+
 
 
 # References
 [anchor-diagram]: https://i.imgur.com/hviuZwe.png "FreeCodeCamp's diagram for anchor tags"
+[element-spacing-diagram]: http://bit.ly/2s3DdpO "Diagram showing relation of spacing properties" 
