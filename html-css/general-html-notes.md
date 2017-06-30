@@ -245,6 +245,32 @@ selector#id1
     - can be serially defined in order of `top`, `right`, `bottom`, `left`
     - no color property
 
+### Inheritance
+  - Within the element hierarchy of an HTML document, all elements nested inside an element inherit the same class properties
+    - If another class is used by a tag inside of another one, those properties will override the parent if conflicts exist
+  - If two or more classes are given to an HTML element, the class that was given to it last is the one that wins if property definitions clash
+  - And going even further into specific overrides of multiple clashing classes, adding an `id` attribute and that id being defined as having clashing properties, the id will win out in overriding over classes
+  - Even higher precedence still in style declarations, is using the style attribute specifically within an HTML tag
+      - Overrides everything else 
+  - Sometimes when using CSS libraries they can have the habit of overriding many if not all of your personal specifications in CSS
+  - `!important` as an appended part to a class property's definition means that it will override anything else that clashes in its declaration
+```css
+.pink-text 
+{
+      color: pink !important;
+}
+```
+
+### Representing Color
+- Hex codes, *duh* 
+  - `#000000`
+- There's also an abreviated hexcode where instead of an 8bit number to represent each color channel, a 4bit number can be used
+  - `#F00` is red
+  - `#0FF` is cyan
+- The other option is to use decimal representations of the 8 bit colormap to represent color
+  - `rgb(100, 230, 5)`
+
+## Responsive Design
 
 
 # References
