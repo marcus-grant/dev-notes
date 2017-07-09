@@ -149,7 +149,7 @@ font-family: "Goudy Bookletter 1911", sans-serif
 ## Text Fields
 - Uses tag of name `input`
 - Good way to make forms
-- Ex: `<input type="text">
+- Ex: `<input type="text">`
 - Self-closing tag
 - Place holder text is defined by attribute `placeholder` and specifies the text that appears before any text is entered
 - **Web Forms** are like text fields, but send back data to the server by using the `form` element

@@ -28,7 +28,7 @@ General security notes that I make along the way on securing my various personal
 
 ### Setup CA Directory
 - Use easy-rsa's `make-cadir ~/openvpn-ca`
-- Go to that folder
+- Go to that folderE
 
 ### Configure CA Variables
 - edit the file `~/openvpn-ca/vars`
@@ -40,14 +40,24 @@ export KEY_CITY="NYC"
 export KEY_ORG="Pattern-Buffer"
 export KEY_EMAIL="marcus.grant@patternbuffer.io"
 export KEY_OU="PatternBuffer"
-
+```
+```
 # X509 Subject Field
-export KEY_NAME="server"                                                                                                         ```
+export KEY_NAME="server"                                                                                               ```
 
 ### Build Certificate Authority
 - in `~/openvpn-ca`...
 - `source vars`
   - should see: something about ./clean-all
+- `./build-ca`
+  - Will prompt about vars, just use the ones defined by hitting enter
+- `./build-key-server server`
+  - Will prompt about same vars, but also to commit and sign key, do so
+  - **Do not** enter a challenge password, this will be handled later
+- `./build-dh`
+  - can take some time as it is randomizing seed values for the diffie helman status used
+  - on my minimal droplet it takes about 2 minutes
+  -
 
   
 
