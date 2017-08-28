@@ -61,7 +61,9 @@ A general collection of highly unorganized notes relating to react. Use these to
 -
 
 ## React Router
-* taken [https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf](from)
+[6]: http://bit.ly/2xrCaTH
+[7]: http://bit.ly/2xsbdiM
+* taken [from Paul Sherman on Medium][6] & [FreeCodeCamp on Medium][7] 
 - There are multiple types of routers react can Use
   - For browsers: `<BrowserRouter>` & `<HashRouter>`
   - `<BrowserRouter>` should be used when there's a server that will handle dynamic requests
