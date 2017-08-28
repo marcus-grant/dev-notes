@@ -60,4 +60,18 @@ A general collection of highly unorganized notes relating to react. Use these to
   - ? TODO: follow up on createElement because it might be incorrect
 -
 
+## React Router
+* taken [https://medium.com/@pshrmn/a-simple-react-router-v4-tutorial-7f23ff27adf](from)
+- There are multiple types of routers react can Use
+  - For browsers: `<BrowserRouter>` & `<HashRouter>`
+  - `<BrowserRouter>` should be used when there's a server that will handle dynamic requests
+    - Knows how to respond any possible URI stored in the server
+  - `<HashRouter>` is for static websites
+    - can only respond to requests for files it knows about
+  - A good default would be `BrowserRouter`, typically `HashRouter` is only used when a website is predominantly serving static files
+- Each router creates a standard javascript object, `history`, which tracks the current and previous locations being and having been visited
+- The other components provided by the React Router rely on having that `history` object throughout the context, so it must be rendered inside those objects
+- A React Router component that doesn't have a router as one of its ancestors will fail to work
+
 ## Misc.
+-
