@@ -72,6 +72,20 @@ A general collection of highly unorganized notes relating to react. Use these to
 - Each router creates a standard javascript object, `history`, which tracks the current and previous locations being and having been visited
 - The other components provided by the React Router rely on having that `history` object throughout the context, so it must be rendered inside those objects
 - A React Router component that doesn't have a router as one of its ancestors will fail to work
+- Here is some more info on the [https://medium.com/@pshrmn/a-little-bit-of-history-f245306f48dd](history) object
+- `<Router>`objects can only have one child element
+  - To deal with this it's important to to create an `<App>` that renders the rest of the application, seperate from the router
+```jsx
+import { BrowserRouter } from 'react-router-dom'
+
+ReactDOM.render((
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+), document.getElementById('root'))
+```
+
+
 
 ## Misc.
 -
