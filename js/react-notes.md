@@ -330,6 +330,8 @@ const TwitterFeed = () => <h3>Twitter Feed</h3>
 - Then finally go to the `Address` component to add the `<Link>`s for the new `TwitterFeed` & `Instagram` components that get linked with the `Address` component
 -
 
+### activeStyle, activeClassName and IndexLink
+
 
 
 
