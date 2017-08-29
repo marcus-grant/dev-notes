@@ -63,7 +63,7 @@ A general collection of highly unorganized notes relating to react. Use these to
 ## React Router
 [6]: http://bit.ly/2xrCaTH
 [7]: http://bit.ly/2xsbdiM
-* taken [from Paul Sherman on Medium][6] & [FreeCodeCamp on Medium][7] 
+* taken [from Paul Sherman on Medium][6] & [FreeCodeCamp on Medium][7]
 - There are multiple types of routers react can Use
   - For browsers: `<BrowserRouter>` & `<HashRouter>`
   - `<BrowserRouter>` should be used when there's a server that will handle dynamic requests
@@ -86,6 +86,250 @@ ReactDOM.render((
   </BrowserRouter>
 ), document.getElementById('root'))
 ```
+## FreeCodeCamp Tutorial From FreeCodeCamp.com
+[from][7]
+`"React Router keeps your UI in sync with the URL. It has a simple API with powerful features like lazy code loading, dynamic route matching, and location transition handling built right in. Make the URL your first thought, not an after-thought."`
+### Creating the Site Dev-Environment
+** NEEDS ALOT OF EDITING TO MAKE SURE PROCEDURE WORKS **
+- To start either clone this [https://github.com/dabit3/beginners-guide-to-react-router](repo), or keep following along to set up the react environment
+- This environment will be set up with React, Babel & webpack
+```
+npm init -y
+```
+- `-y` simply answers in the affirmative in all upcoming prompts
+- Next, install react, react-dom, and the epynomious react-router and make sure npm saves them as dependencies
+```
+npm i react react-dom react-router@2.0.1 --save
+```
+- Next install the development dependencies. This includes:
+  - [webpack](https://webpack.github.io/), which is a bundler of complex web assets, particularly javascripts, and gives easy to use wrappers to tie together the whole development workflow
+  - [babel](https://github.com/babel/babel), a transpiler that converts modern javascript like es6, which we will be using, into fully compatible javascript
+```
+npm i webpack webpack-dev-server babel-core babel-loader babel-preset-es2015 babel-preset-react --save-dev
+```
+- Now, create configurations for webpack and babel
+```
+touch .babelrc webpack.config.js
+```
+- Typically, the app code resides in its own folder within the project root, usually under the name `project-root/app`
+```
+mkdir app
+```
+- In the `app` directory make three files with the `touch` command, which just creates empty files of the specified name in the current workind directory of the terminal
+```
+cd app
+touch index.html app.js main.js
+```
+- by now there should be two folders, `app` and `node_modules`, and four files `.babelrc`, `package-lock.json`, `package.json` and `webpack.config.js` within the app directory
+  - Inside `app`, should be three files;  `app.js`, `index.html` & `main.js`
+- These configuration files are however largely if not entirely empty, so let's configure `.babelrc` properly first, by adding the presets for react and ES2015
+```
+{
+  "presets": [
+    "es2015",
+    "react"
+  ]
+}
+```
+- In `webpack.config.js`, add the following configuration lines to get started:
+```
+module.exports = {
+  entry: './app/main.js',
+  output: {
+    path: './app',
+    filename: 'bundle.js'
+  },
+  devServer: {
+    inline: true,
+    contentBase: './app',
+    port: 8100
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel'  
+      }
+    ]
+  }
+}
+```
+- Now that babel is set up for transpiling react and ES2015 properly, and a basic configuration for webpack to the current project file/folder structure, it's time to create webpack-dev-server configuration in `package.json`
+  - Open `package.json` and insert the `webpack-dev-server` script with the `start` key to tell npm to start the dev server with the keyword `start`
+  - If the `scripts` key isn't there already, insert the below text towards the end, before the final closing `}` bracket
+```
+"scripts": {
+  "start": "webpack-dev-server"
+}
+```
+- Which when inserted with other parts of the `package.json` file might look something like this:
+```json
+{
+  ...,
+  ...,
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  },
+  "scripts": {
+    "start": "webpack-dev-server"
+  }
+}
+```
+- Now let's create the opening HTML and React stuff
+  - Open `index.html` and create a base html page
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>React Router</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="./bundle.js"></script>
+  </body>
+</html>
+```
+- Now, go into `main.js`, to create the point of entry for the app like below:
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './app'
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+- This is defining the javascript file defined inside `webpack.config.js` by the key `entry`, which tells the webpack-dev-server where to go first when serving the website
+- With the entry point in place, it's time to make a quick place holder display for the app inside of `app.js`, just to make sure everything till now works
+```javascript
+import React, { Component } from 'react'
+import { Router, Route, Link, IndexRoute, hashHistory,
+   browserHistory } from 'react-router'
+
+const App = () => <h1>Hello World!</h1>
+export default App
+```
+
+## Routing
+- To let the router wrap all routes of the app, replace the `App` component with a React class returning a `Router` component
+- Each route gets defined by a `<Route>` component
+- When an address is matched, *whether through the address bar or through links* a `<Route>` component, it will return the component specified to it
+- In `app.js`, change the file to this:
+```javascript
+import React, { Component } from 'react'
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router'
+class App extends Component {
+  render() {
+    return (
+      <Router history={hashHistory}>
+        <Route path='/' component={Home} />
+        <Route path='/address' component={Address} />
+      </Router>
+    )
+  }
+}
+const Home = () => <h1>Hello from Home!</h1>
+const Address = () => <h1>We are located at 555 Jackson St.</h1>
+export default App
+```
+
+### 404 Link for Non-Matched URI's
+- It's good to have a Route for non-defined addresses or links
+- To add it, follow the same pattern of defining a const arrow function representing the returned HTML for a 404 page, then add it **to the end** of the `<Router>`'s list of `<Route>`s
+  - The 404 must be the last route, because it is defined using a wildcard `*`, as its path
+  - That wildcard means that *any* link will trigger that route, so it must be placed after all other Routes so that it only triggers if no other route is matched
+```javascript
+import React, { Component } from 'react'
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router'
+class App extends Component {
+  render() {
+    return (
+      <Router history={hashHistory}>
+        <Route path='/' component={Home} />
+        <Route path='/address' component={Address} />
+        <Route path='*' component={NotFound} />
+      </Router>
+    )
+  }
+}
+const Home = () => <h1>@Home</h1>
+const Address = () => <h1>@Address</h1>
+const NotFound = () => (
+  <h1>404, the internet isnt made of tubes</h1> )
+
+export default App
+```
+
+### IndexRoute & links
+- From the React Router documentation
+> The primary way to allow users to navigate around your application. <Link> will render a fully accessible anchor tag with the proper href.  >
+
+- To create navigable links that are routed, the `<Link>` tag is used
+  - `Link` has an attribute `to` which needs to be specified to a valid `Route` in order to link the link component to it
+- Below is a component named `Nav` that creates two links, one for `Home` & `Address`
+
+```javascript
+const Nav = () => (
+  <div>
+    <Link to='/'>Home</Link>&nbsp;
+    <Link to='/address'>Address</Link>
+  </div>
+)
+```
+
+- To make the `Nav` component persistent across all pages
+- This is done by wrapping child routes in a main `<Route>` component
+- Also, the home component needs to get updated by creating a new component called `Container`
+
+```javascript
+const Container = (props) => <div>
+  <Nav />
+  {props.children}
+</div>
+```
+
+- `{props.children}` will allow any routes wrapped within this route to be rendered in this component.
+- Rewriting the App component, wrap the `HomePage`, `Address` & `NotFound` routes inside the new Container route
+- Also, set `HomePage` to be the `IndexRoute`, *ie the root route for the server*
+- **IndexRoute** Is a type of `Route` which specifically points to the root address of the server
+
+
+### Multiple Child or IndexRoutes
+- If nested index routes are required, say if route options exist within another one and it's desirable to have one be the opening one
+- In this example, rework the `app.js` file:
+```javascript
+class App extends Component {
+  render () {
+    return (
+      <Router history={hashHistory}>
+        <Route path='/' component={Container}>
+          <IndexRoute component={Home} />
+          <Route path='address' component={Address}>
+            <IndexRoute component={TwitterFeed} />
+            <Route path='instagram' component={Instagram} />
+          </Route>
+          <Route path='*' component={NotFound} />
+        </Route>
+      </Router>
+    )
+  }
+}
+```
+
+- This sets the `IndexRoute` of the `Address` component to be `TwitterFeed`, so whenever the `Address` component is visited, `TwitterFeed` always comes up first
+- Now create the `Instagram` & `TwitterFeed` components
+```javascript
+const Instagram = () => <h3>Instagram Feed</h3>
+const TwitterFeed = () => <h3>Twitter Feed</h3>
+```
+
+- Then finally go to the `Address` component to add the `<Link>`s for the new `TwitterFeed` & `Instagram` components that get linked with the `Address` component
+-
+
 
 
 
