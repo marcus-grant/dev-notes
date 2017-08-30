@@ -331,6 +331,155 @@ const TwitterFeed = () => <h3>Twitter Feed</h3>
 -
 
 ### activeStyle, activeClassName and IndexLink
+- Links have a property where their appearance changes based on whether the route is active
+- There are two main ways of defining what that appearance is, `activeStyle` & `activeClassName`
+
+#### activeStyle
+- To apply `activeStyle` simply add the `activeStyle` as a property to the respective `<Link>`
+- `<Link activeStyle={{color: '#53acff'}} to=''>Home</Link>`
+- Do this for all tags that should exhibit  this behavior
+- In the first code example below, if that change is put into effect on the previous examples, then the nested `IndexRoute`s all get highlighted as active if their parent route is
+- To fix this, use the `onlyActiveOnIndex` property on the appropriate `Link` components
+  - `<Link onlyActiveOnIndex activeStyle={{color:'#53acff'}} to='/'>Home</Link>`
+- There's also the sibling component to the `<Link>` component, `<IndexLink>` that automatically bakes that behavior in
+  - `IndexLink` only shows active when the current route is linked *exactly* to that component
+  - The second example below shows as a modification to the one above that example that fixes the problem using `IndexLink`s
+
+```javascript
+const Nav = () => (
+  <div>
+    <Link activeStyle={{color:'#53acff'}} to='/'>Home</Link>&nbsp;
+    <Link activeStyle={{color:'#53acff'}} to='/address'>Address</Link>&nbsp;
+    <Link activeStyle={{color:'#53acff'}} to='/about'>About</Link>
+  </div>
+)
+```
+* Active link styling using the activeStyle propery on <Link>'s from 1. above *
+
+```javascript
+const Nav = () => (
+  <div>
+    <IndexLink activeStyle={{color:'#53acff'}} to='/'>Home</IndexLink>&nbsp;
+    <IndexLink activeStyle={{color:'#53acff'}} to='/address'>Address</IndexLink>&nbsp;
+    <IndexLink activeStyle={{color:'#53acff'}} to='/about'>About</IndexLink>
+  </div>
+)
+```
+* The same Nav component definition but with IndexLink's instead *
+
+#### activeClassName
+- Instead of explicitly defining what this style should be for every single `Link` or `IndexLink` component, it's possible to use style classes Instead
+- This is accomplished using the component attribute, `activeClassName` inside a JSX `Link` or `IndexLink` tag, and giving a style class name, `.active`, in this case but it could be anything, within a CSS file or `<style>` tag
+```html
+<style>
+  .active {
+    color:#53acff
+  }
+</style>
+```
+- Then replace the `activeStyle` of the previous `app.js` examples with `activeClassName` and the now defined `active` style class, the effect should be the same
+
+
+### Named Components
+- To be able to access named components the child elements are accessible by name on `this.props`. In this case `this.props.children` is undefined
+- All route components can participate in the nesting
+- First create a new Component that will be rendering our Named Components
+- These components would then be available as props
+```javascript
+const NamedComponents = (props) => (
+  <div>
+    {props.title}<br />
+    {props.subTitle}
+  </div>
+)
+```
+
+- Then create two new components called `Title` & `SubTitle`
+```javascript
+const Title = () => (
+  <h1>Hello, Im a Title component</h1>
+)
+const SubTitle = () => (
+  <h2>Hello, Im a SubTitle component</h2>
+)
+```
+
+- Now, create a new route for the `NamedComponents` component, and define the `Title` & `Subtitle` components in the `IndexRoute`:
+```javascript
+<Route path='/namedComponent' component={NamedComponents}>
+  <IndexRoute components={{ title: Title, subTitle: SubTitle }} />
+</Route>
+```
+
+- Finally, add a link in the `Nav` component containing navigation logic, to associate `NamedComponent` with a real link
+```javascript
+<IndexLink activeClassName='active' to='/namedComponent'>NamedComponents</IndexLink>
+```
+
+- The result when reloading the new page should be that there should now be a new link, *Named Components* in the navigation section
+- Clikcing this new link should bring up the newly defined Title and Subtitle components which then get passed down as props and instructs React to render them as defined
+
+### Route Parameters
+- A useful use for a URL is to be able to pass route parameters to the web app through the string being passed to the endpoint
+- In React Router this is also possible to emulate through a Single Page application
+- To demonstrate how this is done, take a look at this modified version of the *About* component definition
+```javascript
+const About = (props) => (
+  <div>
+    <h3>Welcome to the About Page</h3>
+    <h2>{props.params.name}</h2>
+  </div>
+)
+```
+
+- Now, go to http://localhost:8100/#/about/frodo , the name *frodo* gets displayed as part of the heading tag
+- However, try to go to http://localhost:8100/#/about , without a parameter specified there's no match with any routes, and thus the 404 result gets shown
+- In order to remedy this, an **optional** value for the for the `Route` attribute `path` needs to be specified by using an enclosing set of paranthesis
+```javascript
+<Route path='/about(/:name)' component={About} />
+```
+
+- Now if http://localhost:8100/#/about is visited, it will simply display the rendered about page with out the subtitle with the name from the route parameter
+- This can be taken even a step further so that an empty `<h3>` isn't rendered at all if there is no parameter route given
+```javascript
+{ props.params.name && <h2>Hello, {props.params.name}</h2> }
+```
+- Replacing the previous `<h2>` from the `About` component definition and replacing it with the above block of code, will only render said `h2` tag if `props.params.name` is passed into the prop's component
+  - The double ampersands `&&` tells react that the statement after it should only be carried out if the previous one evaluates logically as true, which would happen if the prop, `props.params.name` is present
+- Now that tag will only be rendered if the prop is present
+
+### Query String parameters
+- It's possible to pass in specific query strings as props from the route address that gets rendered at a specific route and access these parameters in `props.location.query`
+- To demonstrate the mechanics of a query string, create a new component called `Query` and have it render a property called `props.location.query.message`
+```javascript
+const Query = (props) => (
+  <h2>{props.location.query.message}</h2>
+)
+```
+
+- Now let's set up the new Query Route within the address route already created
+```javascript
+<Route path='/address' component={Address}>
+  <IndexRoute component={TwitterFeed} />
+  <Route path='instagram' component={Instagram} />
+  <Route path='query' component={Query} />
+</Route>
+```
+
+- Then finally link to this route by creating a new Link component, and passing in a query string called message and giving it a value.
+- This is done in the `to` property of a `Link` tag
+
+```javascript
+<IndexLink
+  activeClassName='active'
+  to={{
+    pathname: 'address/query',
+    query: { message: 'Hello from Route Query' }
+  }}>Route Query</IndexLink>
+```
+
+- Now if the *Route Query* link is clicked on the newly update site, the
+
 
 
 
