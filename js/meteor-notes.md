@@ -217,9 +217,8 @@ Meteor.startup(function () {
 });
 
 ```
-  - The app needs to know to render using `React` & `React-DOM`
-  - Meteor also needs to be involved, so grab it from the local project root
-  - This is now JSX style javascript which permits handling ES6+ and HTML within one file
-    - `let jsx` is now storing XML that gets parsed as HTML for react to handle
-  - `React.DOM.render()` is the key function for react that kicks off front end rendering
-    - It requires an element to latch onto, usually identified by `id`, in our case `react-root`
+  - Meteor, treats `client/main.js` as the **main** entry point for clientside javascript,
+  so this is where meteor will start execution, and it just needs `Meteor.startup( func())`
+  to know how to have React start rendering the DOM
+  - Then inside `startup` is where the first statements in React should begin
+  - React requires at least one `ReactDOM.render()` statement with at least one identifier for an html tag to render inside of
