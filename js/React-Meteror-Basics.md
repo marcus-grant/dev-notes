@@ -141,3 +141,94 @@ Meteor.startup(function () {
 - The above now handles all of this by rendering the static `players` array by using `renderPlayers`
 - Now it's automated because `renderPlayers` uses the `map()` function to iterate the array
 - Which should look like this ![static-data-rendered-react](./static-data-rendering.png)
+
+## Arrow Functions
+- Arrow functions are a very nice bit of syntactic sugar that helps to create function references that can be passed on to other code structures cleaning up a lot of code
+```js
+let square = function (x) {
+  return x*x;
+};
+```
+*the old way of handling anonymous functions*
+- The above shows how to create anonymous functions using fully compatible Javascript
+- This can be useful in some cases where functions need names
+- Arrow functions **don't** support function names for these anonymous functions
+- Below is the same function as an arrow function:
+```js
+let arrow_square = (x) => {
+  return x*x;
+};
+```
+*arrow syntax version of the same anonymous function*
+- Why do this?
+  - They support a simplified expressions syntax, which provides less syntax to simpler things that need to be done
+  - They are more efficient for quick *throw-away* functions
+  - The expression syntax can also be used inside any other expression due to its simplicity
+```js
+let arrow_square = (x) => x*x;
+```
+*Does the same thing, but now the expression can be embedded anywhere*
+**TODO** add section 3 lecture 20 stuff on differences between ES6 & classic JS anon functions
+
+## Refactoring For Arrows
+- *Add for later maybe, hard to display this besides copying and pasting*
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import {Meteor} from 'meteor/meteor';
+import {Players} from './../imports/api/players';
+import {Tracker} from 'meteor/tracker';
+
+const renderPlayers= (playerList) => {
+  return playerList.map(function (player) {
+    return <p key={player._id}>{player.name} has {player.score} point(s)!</p>;
+  });
+};
+
+const handleSubmit = (e) => {
+  let playerName = e.target.playerName.value;
+
+  e.preventDefault();
+
+  if (playerName) { //validate against empty strings
+    e.target.playerName.value = '';
+    //players insertion with a new score of '0'
+   Players.insert({
+     name: playerName,
+     score: 0
+   });
+   console.log(Players.find().fetch());
+  }
+}
+
+Meteor.startup(() => {
+  // Create a players list 'players' by fetching from datastore
+  players = Players.find().fetch();
+  Tracker.autorun(() => {
+    // Update players on datastore updates
+    players = Players.find().fetch();
+
+  // Moving this inside of the autorun, ensures that rendering occurs on update
+    title = "Score Kepp";
+    name = "Marcus"
+    let jsx = (
+      <div>
+        <h1>{title}</h1>
+        <p>Hello {name}!</p>
+        <p>This is my second p.</p>
+        <form onSubmit={handleSubmit}>
+          <input type="text" name="playerName" placeholder="Player Name"/>
+          <button>Add Player</button>
+        </form>
+        {renderPlayers(players)}
+      </div>
+    )
+    ReactDOM.render(jsx, document.getElementById('react-root'));
+  })
+  // insert new doc into players collection
+  //    exactly the same as in on server
+
+});
+```
+*client/main.js refactored to properly use arrow functions*
+- Above is a great example for how to refactor for arrow functions, it's just the previous `client/main.js` file but now with arrow functions instead
