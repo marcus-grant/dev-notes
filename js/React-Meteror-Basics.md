@@ -140,7 +140,10 @@ Meteor.startup(function () {
 ```
 - The above now handles all of this by rendering the static `players` array by using `renderPlayers`
 - Now it's automated because `renderPlayers` uses the `map()` function to iterate the array
-- Which should look like this ![static-data-rendered-react](./static-data-rendering.png)
+- Which should look like this
+
+![static-data-rendered-react](images/static-data-rendering.png)
+
 
 ## Arrow Functions
 - Arrow functions are a very nice bit of syntactic sugar that helps to create function references that can be passed on to other code structures cleaning up a lot of code
