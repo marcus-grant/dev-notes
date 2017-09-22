@@ -207,4 +207,10 @@ TitleBar.propTypes = {
 - Now the title should show up as **"Default Title"** instead
 
 ### Type Checking Done Right (prop-types)
-**CONTINUE HERE**
+**TODO:** come back to this with proper type validation, either with `prop-types` or airBnB's solution
+- Seems all that's needed is to...
+  - Install `prop-types`
+    - `meteor npm install prop-types --save`
+  - Import PropTypes where needed
+    - `import PropTypes from 'prop-types'`
+  -
