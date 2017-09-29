@@ -213,4 +213,7 @@ TitleBar.propTypes = {
     - `meteor npm install prop-types --save`
   - Import PropTypes where needed
     - `import PropTypes from 'prop-types'`
-  -
+
+## Custom Component Functions
+- Let's finish the Add player functionality by handling it through custom component functions
+- 
