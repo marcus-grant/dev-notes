@@ -138,4 +138,27 @@ render() {
 - This is important when using 3rd party components because they will use that `.children` reference
 - `react-flip-move` is a nice way to make the player list flip and move to reorder themselves whenever the ranking changes between players
 - install with `meteor npm install react-flip-move@2.7.2`
-- 
+
+## Dynamic SCSS with ES6
+- A very nifty feature, this allows to inject into the ES6 code different `className` values based off of computed values
+- In the below incomplete snippet of a React component a string is generated using the `$` operator and the js evaluation block `{}` to generate a `className` string that is based on a computed value
+`imports/ui/Player.js`
+```js
+// ...
+let itemClassName = 'item item--position-${this.props.player.position}';
+return (
+  <div key={this.props.player._id} className={itemClassName}>
+{/* ... */}
+```
+
+## SASS Functions
+- SASS & SCSS support functions being used to calculate values
+- Variables can be defined **TODO** put variables somewhere **END** using `$green`
+  - `$` operator is used to both define and reference variables
+- Functions can then be used to define these variables
+- There are *tons* of variables pre-defined in SASS, like `darken()` below which is used to darken green for a border
+```SASS
+$green: #e4ede0;
+$green-alt: darken($green, 15%);
+```
+
