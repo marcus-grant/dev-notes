@@ -4,7 +4,8 @@
 - Cover the layers and philosophical underpinnings of this architecture
 
 
-## 
+##  Data goals
+- 
 
 ## References
 [1]: https://emeeks.github.io/semiotic/#/semiotic/ "Semiotic Overview"
