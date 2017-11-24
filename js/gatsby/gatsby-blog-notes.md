@@ -48,9 +48,65 @@ To make this gatsby site a nice blog, some plugins will be needed. These can be 
 
 #### Functional Plugins
 
-These plugins add, orr extended functionality *(e.g. offline support, generating sitemaps, etc.)* or they extend Gatsby's webpack configurations. For this particular blog, avoiding page reloads and ability to dynamically change the `title` tag within head `tags` would be nice. The plugins `gatsby-plugin-catch-links` & `gatsby-plugin-react-helmet` will handle a lot of this added functionality. `gatsby-plugin-catch-links` handles the history `pushState` API and avoids page reloads when following links and instead loads on-demand rendered pages from the server or cache. `gatsby-plugin-react-helmet` uses [react-helmet][5] to modify `head` tags, and gatsby statically renders any of these `head` changes.
+These plugins add, or extend functionality *(e.g. offline support, generating sitemaps, etc.)* or they modify Gatsby's webpack configurations. For this particular blog, avoiding page reloads and an ability to dynamically change the `title` tag within head `tags` would be nice. The plugins `gatsby-plugin-catch-links` & `gatsby-plugin-react-helmet` will handle this added functionality and then some. `gatsby-plugin-catch-links` handles the history `pushState` API and avoids page reloads when following links and instead loads on-demand rendered pages from the server or cache. `gatsby-plugin-react-helmet` uses [react-helmet][5] to modify `head` tags, and gatsby statically renders any of these `head` changes. ***Note*** *newer versions of gatsby will already have gatsby-plugins-react-helmet installed*.
+
+Install by using either yarn or npm like so: `yarn add gatsby-plugin-catch-links` or `npm install --save gatsby-plugins-catch-links`. And then add the plugin to `gatsby-config.js` like below.
+
+`gatsby-config.js`:
+```js
+module.exports = {
+  siteMetadata: {
+    title: `Your Name - Blog`,
+    author: `Your Name`,
+  },
+  plugins: [
+    'gatsby-plugin-catch-links',
+    'gatsby-plugin-react-helmet',
+  ],
+}
+```
+
+Now, `gatsby develop` should succesfully load the page like it did before, but with the new plugin. All that needed to be done was to add the package with either npm or yarn, and to edit the `gatsby-config.js` file.
+
+#### Source Plugins
+
+Source plugins work on Gatsby's [Node Interface][6] to create *nodes* that get transformed into a usable format by a transformer plugin. From the link on the Node Interface:
+
+> The “node” is the center of Gatsby’s data system. All data that’s added to Gatsby is modeled using nodes.
+
+A typical workflow for a site that doesn't source all its data from the internet, *(think Wordpress, Netflify, etc)*, will need to source file from the local filesystem. To do this a source plugin, `gatsby-source-filesystem` is needed.
+
+For this site, since the bulk of the blog's content and each article, is to be authored in markdown files, add `gatsby-source-filesystem` using yarn or npm like before. Then modify the `gatsby-config.js` file like this.
+
+`gatsby-config.js`
 
 
+To install these plugins, as the previous section explained in detail, run `yarn add gatsby-source-filesystem` or `npm install --save gatsby-source-filesystem`. Do the same for `gatsby-plugin-catch-links`, but this plugin only needs the name of the plugin in the plugins array. *In newer versions helmet is already installed when creating the project directory, so no need to add it*. Then change `gatsby-config.js`'s plugin array to look like the below snippet.
+
+Finally, `gatsby-source-filesystem` is used to make gatsby capable of sourcing static data like markdown to be rendered into pages.
+`gatsby-config.js`:
+```js
+module.exports = {
+  // previous configuration
+  plugins: [
+    'gatsby-plugin-catch-links',
+    'gatsby-plugin-react-helmet',
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/pages`,
+        name: 'pages',
+      },
+    }
+  ]
+}
+```
+
+Specifying an object, instead of a string in the plugins array is for when a plugin requires some extra options to work. In this case the `gatsby-source-filesystem` plugin needs to be resolved to its plugin name, and then given an options object that specifies that `path` & `name` to locate then to name them.
+
+#### Transformer Plugins
+
+With a source in place (Markdown, JSON, YAML, etc.), transformers as they suggest transform the source data which is inherrently unusable by itself when rendering to a webpage. They need to be be transformed into understandable HTML, CSS and JS that can be queried against by GraphQL. The `gatsby-source-filesystem` loads the files from disk and `gatsby-transormer-remark` uses the [remark][7] markdown processor which is highly extensible and useful for in this regard for its ability to transform to react and to use front matter within the markdown files themselves.
 
 
 ## References
@@ -59,9 +115,13 @@ These plugins add, orr extended functionality *(e.g. offline support, generating
 [3]: http://mern.io/ "MERN Stack Official Site"
 [4]: https://www.gatsbyjs.org/docs/plugins/#official-plugins "Offical GatsbyJS Plugins"
 [5]: https://github.com/nfl/react-helmet "Github: React Helmet"
+[6]: https://www.gatsbyjs.org/docs/node-interface/ "GatsbyJS: Node Interface"
+[7]: https://github.com/wooorm/remark "Github: wooorm/remark"
 
 1. [GatsbyJS Docs: Creating a Blog Tutorial][1]
 2. [GatsbyJS Docs: Plugins][2]
 3. [MERN Stack Official Site][3]
-4. [Offical GatsbyJS Plugins][4]
+4. [GatsbyJS Docs: Offical Plugins][4]
 5. [Github: React Helmet][5]
+6. [GatsbyJS: Node Interface][6]
+7. [Github: Remark][7]
