@@ -48,7 +48,148 @@ To make this gatsby site a nice blog, some plugins will be needed. These can be 
 
 #### Functional Plugins
 
-These plugins add, orr extended functionality *(e.g. offline support, generating sitemaps, etc.)* or they extend Gatsby's webpack configurations. For this particular blog, avoiding page reloads and ability to dynamically change the `title` tag within head `tags` would be nice. The plugins `gatsby-plugin-catch-links` & `gatsby-plugin-react-helmet` will handle a lot of this added functionality. `gatsby-plugin-catch-links` handles the history `pushState` API and avoids page reloads when following links and instead loads on-demand rendered pages from the server or cache. `gatsby-plugin-react-helmet` uses [react-helmet][5] to modify `head` tags, and gatsby statically renders any of these `head` changes.
+**NOTE** *check on fresh system if react-helmet is needed as dependency to download*
+
+These plugins add, or extend functionality *(e.g. offline support, generating sitemaps, etc.)* or they modify Gatsby's webpack configurations. For this particular blog, avoiding page reloads and an ability to dynamically change the `title` tag within head `tags` would be nice. The plugins `gatsby-plugin-catch-links` & `gatsby-plugin-react-helmet` will handle this added functionality and then some. `gatsby-plugin-catch-links` handles the history `pushState` API and avoids page reloads when following links and instead loads on-demand rendered pages from the server or cache. `gatsby-plugin-react-helmet` uses [react-helmet][5] to modify `head` tags, and gatsby statically renders any of these `head` changes. ***Note*** *newer versions of gatsby will already have gatsby-plugins-react-helmet installed*.
+
+Install by using either yarn or npm like so: `yarn add gatsby-plugin-catch-links` or `npm install --save gatsby-plugins-catch-links`. And then add the plugin to `gatsby-config.js` like below.
+
+`gatsby-config.js`:
+```js
+module.exports = {
+  siteMetadata: {
+    title: `Your Name - Blog`,
+    author: `Your Name`,
+  },
+  plugins: [
+    'gatsby-plugin-catch-links',
+    'gatsby-plugin-react-helmet',
+  ],
+}
+```
+
+Now, `gatsby develop` should succesfully load the page like it did before, but with the new plugin. All that needed to be done was to add the package with either npm or yarn, and to edit the `gatsby-config.js` file.
+
+#### Source Plugins
+
+Source plugins work on Gatsby's [Node Interface][6] to create *nodes* that get transformed into a usable format by a transformer plugin. From the link on the Node Interface:
+
+> The “node” is the center of Gatsby’s data system. All data that’s added to Gatsby is modeled using nodes.
+
+A typical workflow for a site that doesn't source all its data from the internet, *(think Wordpress, Netflify, etc)*, will need to source file from the local filesystem. To do this a source plugin, `gatsby-source-filesystem` is needed.
+
+For this site, since the bulk of the blog's content and each article, is to be authored in markdown files, add `gatsby-source-filesystem` using yarn or npm like before. Then modify the `gatsby-config.js` file like this.
+
+`gatsby-config.js`
+
+
+To install these plugins, as the previous section explained in detail, run `yarn add gatsby-source-filesystem` or `npm install --save gatsby-source-filesystem`. Do the same for `gatsby-plugin-catch-links`, but this plugin only needs the name of the plugin in the plugins array. *In newer versions helmet is already installed when creating the project directory, so no need to add it*. Then change `gatsby-config.js`'s plugin array to look like the below snippet.
+
+Finally, `gatsby-source-filesystem` is used to make gatsby capable of sourcing static data like markdown to be rendered into pages.
+`gatsby-config.js`:
+```js
+module.exports = {
+  // previous configuration
+  plugins: [
+    'gatsby-plugin-catch-links',
+    'gatsby-plugin-react-helmet',
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/pages`,
+        name: 'pages',
+      },
+    }
+  ]
+}
+```
+
+Specifying an object, instead of a string in the plugins array is for when a plugin requires some extra options to work. In this case the `gatsby-source-filesystem` plugin needs to be resolved to its plugin name, and then given an options object that specifies that `path` & `name` to locate then to name them.
+
+#### Transformer Plugins
+
+With a source in place (Markdown, JSON, YAML, etc.), transformers as they suggest transform the source data which is inherrently unusable by itself when rendering to a webpage. They need to be be transformed into understandable HTML, CSS and JS that can be queried against by GraphQL. The `gatsby-source-filesystem` loads the files from disk and `gatsby-transormer-remark` uses the [remark][7] markdown processor which is highly extensible and useful for this regard for its ability to transform to react and to use front matter within the markdown files themselves. 
+
+To install, simply use yarn or npm to add `gatsby-transformer-remark` by either entering: `yarn add gatsby-transformer-remark` using yarn or with npm `npm install --save gatsby-transformer-remark`. Then edit the `gatsby-config.js` file, this time again with special options for the plugin, specified as an object. 
+
+`gatsby-config.js`
+```js
+module.exports = {
+  // previous setup
+    plugins: [
+    'gatsby-plugin-catch-links',
+    'gatsby-plugin-react-helmet',
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/pages`,
+        name: 'pages',
+      },
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [] // just in case those previously mentioned remark plugins sound cool :)
+      }
+    },
+  ]
+};
+```
+
+Now, finally all the plugins should be sorted, and that will be verified with a quick `gatsby develop` and before that closing the server to make sure the changes have taken effect.
+
+## Writing the first Markdown Blog Post
+
+Because of how `gatsby-source-filesystem` has been configured, it expects content to be stored inside `src/pages`, so let's put in the first blog post!
+
+Though gatsby is pretty unopinionated about how to store blog posts (so long as it makes sense to the plugin configurations specified). It is convention however, to name posts using this convention: `MM-DD-YYYY-title` or `YYYY-MM-DD-title` for the non-Americans. So create a new folder of path, `src/pages/2017-11-27-hello-world` to get started, then create an `index.md` file inside it. Then just copy the text below, save it and check your [http://localhost:8000][20] dev server and see what's happened.
+
+`src/pages/2017-11-24-hello-world/index.md`:
+```md
+---
+path: "/hello-world"
+date: "2017-07-12T17:12:33.962Z"
+title: "My First Gatsby Post"
+---
+
+Oooooh-weeee, my first blog post!
+```
+
+Unfortunately, nothing new has rendered, but hopefully no browser errors are reported either. This is because only the data source has been added, but gatsby doesn't know how it's going to render it yet *(e.g. style, template, extra content like images, etc.)*. And what's with the `---` marks in the markdown file? This is known as **frontmatter** and it's what will be used to provide extra metadata for the blogpost that Gatsby can then use inject React components with specified data, *(e.g. path, date, title, etc.)*. Any kind of metadata can be specified to alter how it is handled so later, be sure to experiment with it.
+
+## Creating a (React) Template
+
+Because Gatsby supports server side rendering to React components, that's how in this tutorial they will be written. First, create a file *(and the src/templates folder if it doesn't exist)* like below:
+
+`src/templates/blog-post.js`:
+```js
+
+
+import React from 'react';
+import Helmet from 'react-helmet';
+
+// import '../css/blog-post.css'; // make it pretty!
+
+export default function Template({
+  data // this prop will be injected by the GraphQL query we'll write in a bit
+}) {
+  const { markdownRemark: post } = data; // data.markdownRemark holds our post data
+  return (
+    <div className="blog-post-container">
+      <Helmet title={`Your Blog Name - ${post.frontmatter.title}`} />
+      <div className="blog-post">
+        <h1>{post.frontmatter.title}</h1>
+        <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.html }} />
+      </div>
+    </div>
+  );
+}
+```
+
+This just creates a React template for blog posts, with some soon to be explained magic. Basically it just takes `helmet` & `react` to return a some `div`s containing the `helmet` metadata for title, which fetches from the markdown frontmatter, `post.frontmatter.title`, and returns the contents of a blog post inside `post.html`.
+
+### Writing the Blog Post GraphQL Query
+
 
 
 
@@ -59,9 +200,14 @@ These plugins add, orr extended functionality *(e.g. offline support, generating
 [3]: http://mern.io/ "MERN Stack Official Site"
 [4]: https://www.gatsbyjs.org/docs/plugins/#official-plugins "Offical GatsbyJS Plugins"
 [5]: https://github.com/nfl/react-helmet "Github: React Helmet"
+[6]: https://www.gatsbyjs.org/docs/node-interface/ "GatsbyJS: Node Interface"
+[7]: https://github.com/wooorm/remark "Github: wooorm/remark"
+[20]: http://localhost:8000 "Dev Server Address"
 
 1. [GatsbyJS Docs: Creating a Blog Tutorial][1]
 2. [GatsbyJS Docs: Plugins][2]
 3. [MERN Stack Official Site][3]
-4. [Offical GatsbyJS Plugins][4]
+4. [GatsbyJS Docs: Offical Plugins][4]
 5. [Github: React Helmet][5]
+6. [GatsbyJS: Node Interface][6]
+7. [Github: Remark][7]
