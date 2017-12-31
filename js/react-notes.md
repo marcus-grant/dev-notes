@@ -60,6 +60,33 @@ A general collection of highly unorganized notes relating to react. Use these to
   - ? TODO: follow up on createElement because it might be incorrect
 -
 
+## States
+- For react states inside of ES6 classes, currently the best way to handle class methods that modify state is to follow this pattern
+```js
+class SomeClass extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { someStateProperty: 42, };
+    this.someEventHandler = this.someEventHandler.bind(this);
+  }
+
+  someEventHandler() {
+    console.log('Event Happened!');
+    this.setState({ someStateProperty: this.state.label + 1 });
+  }
+
+  render() {
+    return (
+      <SomeComponent eventHandler={this.someEventHandler} />
+    );
+  }
+}
+```
+- Notes about above snippet:
+  - The airbnb eslint configuration requires the older, non-arrow function, method of binding this within the constructor to a non-arrow class function
+  - Simply pass the function reference as a prop to the child component
+  - without the airbnb config, using more modern configs it's possible to ignore the constructor binding by simply using an arrow
+
 ## React Router
 [6]: http://bit.ly/2xrCaTH
 [7]: http://bit.ly/2xsbdiM
