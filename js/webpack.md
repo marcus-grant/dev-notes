@@ -47,14 +47,29 @@ Some quick remarks about the configuration file:
 Now with that config in place, it's possible to run the webpack binary by itself without specifying any parameters
 
 
+Misc. Notes
+-----------
+- If babel can't resolve `.jsx` extensions in imports, according to this [babel forum thread][14], there should be a `resolve` conficuration within `webpack.config.js`
+`webpack.config.js`:
+```js
+// within module.exports at top level
+// ...
+resolve: {
+  extensions: ['.js', '.jsx']
+},
+// ...
+```
+
 References
 ----------
 [10]: http://jimfrenette.com/2017/11/webpack-3-sass-cssnano-autoprefixer-workflow/ "Jim Frenette: Webpack 3 with SASS loaders"
 [11]: https://www.twilio.com/blog/2015/08/setting-up-react-for-es6-with-webpack-and-babel-2.html "Twilio Blog: Setting Up Webpack for React & ES6 using Babel & Webpack Loaders"
 [12]: https://stanko.github.io/webpack-babel-react-revisited/ "MuffinMan: Setting Up Webpack, Babel & React from Scratch (Revisited)"
 [13]: http://bit.ly/2zoKnrv "StackOverflow: Loader Error in Webpack on JSX"
+[14]: http://discuss.babeljs.io/t/es6-import-jsx-without-suffix/172/2 "Babel Forums: ES6 import .jsx without suffix/extension"
 
 10. [Jim Frenette: Webpack 3 with SASS loaders][10]
 11. [Twilio Blog: Setting Up Webpack for React & ES6 using Babel & Webpack Loaders][11]
 12. [MuffinMan: Setting Up Webpack, Babel & React from Scratch (Revisited)][12]
 13. [StackOverflow: Loader Error in Webpack on JSX][13]
+14. [Babel Forums: ES6 import .jsx without suffix/extension][14]
