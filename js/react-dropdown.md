@@ -1,12 +1,10 @@
 Dropdown Menus in React
 =======================
 
-The Div & Span Way
-------------------
+References
+----------
+[01]: http://www.thejoemorgan.com/blog/2016/01/05/creating-a-dropdown-menu-in-react/ "Creating a Dropdown in React"
+[02]: https://blog.prototypr.io/using-reactcsstransitiongroup-for-enter-exit-animations-ea100d68e72f "Using ReactCSSTransitionGroups"
 
-- This makes heavy use of CSS (probably requires a preprocessor like LESS or SASS)
-- It renders two states
-  - The `expandedList` view which shows all the options when the menu is selected
-  - The `collapsedList` view which is the default state
-- State is managed by state property `isExpanded` & `selectedOption` to handle selection
-
+1. [Creating a Dropdown in React][01]
+2. [Using ReactCSSTransitionGroups][02]
