@@ -87,6 +87,16 @@ class SomeClass extends React.Component {
   - Simply pass the function reference as a prop to the child component
   - without the airbnb config, using more modern configs it's possible to ignore the constructor binding by simply using an arrow
 
+## Miscalleneous
+- When passing callbacks as event handlers and passing arguments...
+  - if passing without arrows but with args, the function gets called during the render call of the component and endless loops and unexpected behavior can form
+  - **BAD**
+  - `<button onClick={combinedCallback(props.id)}>Click</button>`
+  - **GOOD**
+  - `<button onClick={()=> props.combinedCallback(props.id)}>Click</button>`
+  - `<button onClick={props.callbackWithoutArgument}>Click</button>`
+
+
 ## React Router
 [6]: http://bit.ly/2xrCaTH
 [7]: http://bit.ly/2xsbdiM
