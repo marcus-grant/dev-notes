@@ -53,16 +53,16 @@ Webpack for React (Babel)
   - `yarn add --dev babel-cli babel-core babel-loader babel-preset-env babel-preset-es2015 babel-preset-es2016 babel-preset-react babel-preset-stage-2`
 - There also needs to be an HTML file that the main React app renders into by ID typically in either: `./index.html`, `src/index.html` or `dist/index.html`
 ```html
-<!doctype html>                                                                                                  
-<html>                                                                                                           
-  <head>                                                                                                         
-    <meta charset="UTF-8">                                                                                       
-    <title>Express API Demo</title>                                                                              
-  </head>                                                                                                        
-  <body>                                                                                                         
-    <div id="react-root"></div>                                                                                  
-    <script src="bundle.js"></script>                                                                            
-  </body>                                                                                                        
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Express API Demo</title>
+  </head>
+  <body>
+    <div id="react-root"></div>
+    <script src="bundle.js"></script>
+  </body>
 </html>                                                                                                          
 ```
 ***NEED TO ADD STUFF ABOUT YOUR PARTICULAR GO_TO WEBPACK CONFIG***
