@@ -507,9 +507,26 @@ const Query = (props) => (
 
 - Now if the *Route Query* link is clicked on the newly update site, the
 
+### Changing State Based on Current State
+From [FullStack React][01]
+>“whenever a state update depends on the current state, it is preferable to pass a function to setState()”
+```js
+decrement = () => {
+  this.setState(prevState => {
+    return { value: prevState.value - 1, };
+  });
+}
+```
+
 
 
 
 
 ## Misc.
 -
+
+References
+----------
+[01]: https://www.fullstackreact.com/ "FullStack React by ng-book"
+
+1. ["FullStack React" by ng-book][01]
