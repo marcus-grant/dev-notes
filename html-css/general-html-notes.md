@@ -101,7 +101,7 @@ font-family: "Goudy Bookletter 1911", sans-serif
 - `<img src="https://www.some-image.com/meme1.jpg">`
 - All images **must** have an `alt` attribute
   - Should an image load fail, or the screen reader be needed, the alt fills it in with placeholder text
-  - `<img src="https://some-pic.com/my-img.jpg" alt="You hopefully won't be seeing this">
+  - `<img src="https://some-pic.com/my-img.jpg" alt="You hopefully won't be seeing this">`
 - Most use cases of the `img` element will work with self closing tags, ie *they don't need a closing tag*
   - Intuitive, because the image opening tag contains all the information the markup needs, everything else would be specified in stylesheets
   - **NOTE** I tried a long string for the `alt` attribute and it didn't work until I reduced its length
@@ -165,7 +165,7 @@ font-family: "Goudy Bookletter 1911", sans-serif
   - `required` attributes in the `input` element handles this
   - `required` doesn't have `=""` part to it
   - `<input type="text" placeholder="cat photo URL" required>`
-- **Radio Buttons* Are selection elements that can be grouped to permit only one choice from a grouping
+- **Radio Buttons** Are selection elements that can be grouped to permit only one choice from a grouping
   - They are a type of `input` where their `type` attribute specifies it as a `radio`
   - They are nested inside `labels` where the text between the `label` tags define the button text
   - A radio needs to have `name` attributes to name the group of radio buttons such that that group can only have one selection
@@ -273,6 +273,61 @@ selector#id1
 ## Responsive Design
 
 
+SVG Triangles Through CSS Rules
+-------------------------------
+- By exploiting properties of squares that makes triangles and applying them to divs...
+- `border` properties can be used to make easy triangles
+
+```html
+<div class="arrow-up"></div>
+<div class="arrow-down"></div>
+<div class="arrow-left"></div>
+<div class="arrow-right"></div>
+```
+
+```css
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  
+  border-bottom: 5px solid black;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  
+  border-top: 20px solid #f00;
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 60px solid transparent;
+  border-bottom: 60px solid transparent;
+  
+  border-left: 60px solid green;
+}
+
+.arrow-left {
+  width: 0; 
+  height: 0; 
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent; 
+  
+  border-right:10px solid blue; 
+}
+```
+- Which results in the below triangles
+![CSS Triangles][i01]
+
+
 # References
 [anchor-diagram]: https://i.imgur.com/hviuZwe.png "FreeCodeCamp's diagram for anchor tags"
 [element-spacing-diagram]: http://bit.ly/2s3DdpO "Diagram showing relation of spacing properties" 
+
+[i01]: ./pics/css-triangles.png "Triangles Made with CSS"
