@@ -528,6 +528,19 @@ decrement = () => {
 }
 ```
 
+### Conditional Rendering using Logical Operators
+- From [MDN][02]
+- These operators can be used to **short-circuit** evaluations
+- This is due to boolean logic...
+  - anything false **AND** anything else, is false
+  - anything true **OR** anything else, is true 
+
+ Operator | Usage            | Description 
+--------- |----------------- |------------ 
+ AND `&&` | `expr1 && expr2` | Returns `expr1` if convertible to false, otherwise `expr2`
+ OR `||`  | `expr1 || expr2` | Returns `expr1` if convertible to `true`, otherwise `expr2`
+ NOT `!`  | `!expr` | Returns `false` if `expr` can be evaluated *truthy*, otherwise, `false`
+
 
 
 
@@ -538,5 +551,7 @@ decrement = () => {
 References
 ----------
 [01]: https://www.fullstackreact.com/ "FullStack React by ng-book"
+[02]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_Operators "MDN: Logical Operators in JS"
 
 1. ["FullStack React" by ng-book][01]
+2. [MDN: Logical Operators in JS][02]
