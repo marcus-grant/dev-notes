@@ -37,3 +37,5 @@ MIT OCW Relevant Courses
 [MIT6050]: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-050j-information-and-entropy-spring-2008/ "Information & Entropy"
 [MIT6004]: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-004-computation-structures-spring-2009/ "Computation Structures"
 [MIT6851]: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-851-advanced-data-structures-spring-2012/ "Advanced Data Structures"
+MIT6254. [Game Thoery with Engineering Applications][MIT6254]
+[MIT6254]: https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-254-game-theory-with-engineering-applications-spring-2010/ "Game Thoery with Engineering Applications"
