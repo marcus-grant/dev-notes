@@ -323,7 +323,237 @@ gcloud docker -- push gcr.io/hello-kubernetes-200203/hello-kubernetes-image:v1
     * This should be solved with this command: `sudo usermod -a -G docker ${USER}`
 
 
+Deployment
+-------------------
 
+### Setup the Deployment Using Pod Spec
+
+*  Cluster should now be setup and an image should be in the cloud ready to be deployed.
+*  In order to make deployment more seamless, create a deployment file that `kubectl` will read from to automatically deploy the image.
+*  Configuration files can be named anything really, here it's just called `deployment.yml`
+*  I think most data markup syntaxes are supported, *YAML*, JSON, XML*
+
+```yaml
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels: # labels to select/identify the deployment
+        app: hello-kubernetes  
+    spec:     # pod spec                  
+      containers: 
+      - name: hello-kubernetes 
+      # the 'image' name needs to be the same that gets uploaded to the registy
+        image: gcr.io/hello-kubernetes-200203/hello-kubernetes-image:v1
+        ports:
+        - containerPort: 3000
+```
+
+*  Note the data layout here and the specific values that go with their keys:
+    *  **TODO** lookup information on all key-value items
+    *  `spec` defines the actual podspec
+    *   `replicas` defines how many versions of this pod should be started at deployment
+        *  In this case two server instances will actually be spun up and deployed
+    *  `template` defines the templated outcome for initial deployment of this pod
+        *  Everyting inside will now be the template for deploying `hello-kubernetes`
+    *  `labels` is just a set of labels that can be used to filter out resources with this label
+        *  In this case, the `app` key of the label will bring up other `app`s that have they're keys set this way.
+        *  This `app` then becomes identifiable by it's pod name `hello-kubernetes`.
+    *  `name` defines the proper name given to this pod, and it is the name that will be used to refer to it whether on `kubectl` or on some cloud platform.
+        *  Although has the same value as `labels:app:`, they don't need to
+        *  This isn't a unique identifier for the pod however, just this specification for it
+    *  `image` defines the name within the registry to build as a container
+        *  **Note** it's very important for Google users to use the same exact name pushed to the container registry.
+        *  Without this exact name, `ImagePullErr` will likely occur on deployment.
+    *  `ports` just defines the port mappings for this particular container.
+
+### Start the Deployment
+
+```
+kubectl create -f deployment.yml --save-config
+```
+
+*  Now the pod deployment should work
+*  This [guide][07] has good coverage on the kinds of common problems that can be easily debugged that peopple will often encounter.
+*  Most of those bugs will reveal themselves at this stage, just after `kubectl create`.
+
+
+### Get Status of Deployment
+
+```
+kubectl get pods
+```
+
+*  This will poll all pods for the current project and return something similar to this:
+
+```
+NAME                                      READY     STATUS    RESTARTS   AGE
+hello-world-deployment-7b8c5f5f4c-gm8lz   1/1       Running   0          1h
+hello-world-deployment-7b8c5f5f4c-vxls4   1/1       Running   0          1h
+```
+
+*  **Note** there are two pods running now because of the `replicas` value given in `deployment.yml`.
+*  The status should either be `Running` or `Creating` if things are working as expected.
+*  If not, some error message will be given in the status column.
+*  Again, refer to this [article][07] on some pointers for debugging problems encountered here.
+
+```
+kubectl logs hello-world-deployment-7b8c5f5f4c-gm8lz
+```
+
+*  This will inspect the logs of an individual pod within the cluster.
+*  Here is what the log of this pod looks like:
+
+```
+npm info it worked if it ends with ok
+npm info using npm@4.1.2
+npm info using node@v7.7.4
+npm info lifecycle express-hello-world@1.0.0~prestart: express-hello-world@1.0.0
+npm info lifecycle express-hello-world@1.0.0~start: express-hello-world@1.0.0
+
+> express-hello-world@1.0.0 start /opt/hello-kubernetes
+> node index.js
+
+Listening on port 3000...
+```
+
+*  Would you look at that! It's the exact log outputs of the original web app created locally.
+*  That must be good.
+*  Let's see if it responds to an API client, start by...
+
+```
+$ kubectl get all
+```
+
+```
+NAME                            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deploy/hello-world-deployment   2         2         2            2           1h
+
+NAME                                   DESIRED   CURRENT   READY     AGE
+rs/hello-world-deployment-7b8c5f5f4c   2         2         2         1h
+
+NAME                            DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+deploy/hello-world-deployment   2         2         2            2           1h
+
+NAME                                   DESIRED   CURRENT   READY     AGE
+rs/hello-world-deployment-7b8c5f5f4c   2         2         2         1h
+
+NAME                                         READY     STATUS    RESTARTS   AGE
+po/hello-world-deployment-7b8c5f5f4c-gm8lz   1/1       Running   0    
+po/hello-world-deployment-7b8c5f5f4c-vxls4   1/1       Running   0          1h
+
+NAME             TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+svc/kubernetes   ClusterIP   10.11.240.1   <none>        443/TCP   4h
+
+```
+
+*  Among *a lot* of other useful info about the cluster, for now let's just note the `CLUSTER-IP`
+*  Let's use that IP to test which of the pods will handle the API request if we send it one:
+
+```
+http 10.11.240.1:443
+```
+
+*  ... nothing ...
+*  Nope, the connection should just hang and timeout, this is because the cluster isn't...
+
+
+Expose to the Internet
+----------------------
+
+*  Remote clusters by themselves don't have any networking knowhow other than the pods being specified to listen to and talk through certain ports or sockets.
+*  That by itself doesn't mean that the cluster communicates to the outside world.
+*  For that you need to define some kind of `egress` or in this case a `load-balancer` through the `kubectl expos` command.
+
+```
+kubectl expose deployment hello-world-deployment --type="LoadBalancer"
+```
+
+*  The cluster should now be open to the internet.
+*  Behind the scenes, it creates a `service` object.
+    *  A service object is a Kubernetes resource
+    *  In this case it creates a load balancer, a network resource that makes sure the next request gets handled by the least busy resource.
+
+```
+kubectl get services
+```
+
+*  This command, just like `get all` polls the cluster for information, in this case just the general details about each service object.
+*  Here it's possible to see the various networking details for the cluster.
+*  Pay particular attention to the `EXTERNAL-IP` & `PORT(S)` columns so that the cluster can have a request sent to it.
+
+```
+NAME                     TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)          AGE
+hello-world-deployment   LoadBalancer   10.11.254.46   35.190.186.92   3000:30873/TCP   2m
+kubernetes               ClusterIP      10.11.240.1    <none>          443/TCP          4h
+```
+
+*  With the network running and now the details of it revealed it should be possible to finally check if the cluster is working as it should.
+
+```
+ http 35.190.186.92:3000
+```
+
+```
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 11
+Content-Type: text/html; charset=utf-8
+Date: Wed, 11 Apr 2018 22:35:44 GMT
+ETag: W/"b-Ck1VqNd45QIvq3AZd8XYQLvEhtA"
+X-Powered-By: Express
+
+Hello World
+```
+
+*  Finally !!! It now works!
+*  I wonder what the logs of each pod looks like:
+
+
+```
+$ kubectl logs hello-world-deployment-7b8c5f5f4c-gm8lz
+npm info it worked if it ends with ok
+npm info using npm@4.1.2
+npm info using node@v7.7.4
+npm info lifecycle express-hello-world@1.0.0~prestart: express-hello-world@1.0.0
+npm info lifecycle express-hello-world@1.0.0~start: express-hello-world@1.0.0
+
+> express-hello-world@1.0.0 start /opt/hello-kubernetes
+> node index.js
+
+Listening on port 3000...
+```
+
+*  Hmmm.... No request is reported...
+*  Let's check the other pod
+
+```
+$ kubectl logs hello-world-deployment-7b8c5f5f4c-vxls4
+npm info it worked if it ends with ok
+npm info using npm@4.1.2
+npm info using node@v7.7.4
+npm info lifecycle express-hello-world@1.0.0~prestart: express-hello-world@1.0.0
+npm info lifecycle express-hello-world@1.0.0~start: express-hello-world@1.0.0
+
+> express-hello-world@1.0.0 start /opt/hello-kubernetes
+> node index.js
+
+Listening on port 3000...
+Request detected, sending response.
+```
+
+*  There it is, this pod was the one that got the request.
+*  This means that the load balancer is in fact doing what it should be.
+*  Each duplicate of a pod, will only handle one request, that's the beauty and ease of which a cluster can scale.
+*  Only one worker does one job, and if that worker is busy, the next worker gets that job.
+
+
+Scaling the Service
+-------------------
 
 References
 ==========
@@ -334,6 +564,7 @@ References
 4. [Github: jakubroztocil/httpie - A CLI HTTP Client][04]
 5. [Wikipedia: Hard Link][05]
 6. [StackOverflow: Permissions Issues When Uploading Docker Image to GCR][06]
+7. [kukulinski.com: 10 Most Common Reasons][07]
 
 [01]: https://cloud.google.com/sdk/
 [02]: https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project
@@ -341,6 +572,7 @@ References
 [04]: https://github.com/jakubroztocil/httpie
 [05]: https://en.wikipedia.org/wiki/Hard_link
 [06]: https://stackoverflow.com/questions/42224136/permission-denied-when-pulling-docker-image-from-google-cloud-container-registry#42224137
+[07]: https://kukulinski.com/10-most-common-reasons-kubernetes-deployments-fail-part-1/
 
 [i01]: ./images/gcp-dash-projectid.png
 
