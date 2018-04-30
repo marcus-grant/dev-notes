@@ -555,6 +555,14 @@ Request detected, sending response.
 Scaling the Service
 -------------------
 
+*  Now if the demand for the service increases beyond expectation it's important to be able to dynamically scale it by demand, or percentage supply being used over time.
+*  This can be handled within the deployment file `deployment.yml`:
+    * The current number can be changed directly and rerunning the `kubectl create` command.
+    * This however, doesn't really deal with the automation of scaling.
+
+```yaml
+```
+
 References
 ==========
 
