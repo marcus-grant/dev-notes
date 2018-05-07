@@ -37,3 +37,15 @@ Simulate Silent Bit Rot (Random Silent Storage Corruption)
 ```sh
 while true; do dd if=/dev/urandom of=/dev/sdX bs=1 count=1 seek=$RANDOM; sleep 1; done;
 ```
+
+Recursively Find All Uncommited Repos of a Directory
+----------------------------------------------------
+
+* Taken from the below link to a stack overflow quesiton of the same type.
+* [https://stackoverflow.com/questions/961101/git-find-all-uncommited-locals-repos-in-a-directory-tree](https://stackoverflow.com/questions/961101/git-find-all-uncommited-locals-repos-in-a-directory-tree)
+
+```sh
+find . -type d -name '.git' | while read dir ; do sh -c "cd $dir/../ && echo -e \"\nGIT STATUS IN ${dir//\.git/}\" && git status -s" ; done
+```
+
+
