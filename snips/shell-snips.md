@@ -29,3 +29,11 @@ ls -la /dev/disk/by-id/ | grep part1 | cut -d " " -f 11-20
 
 This prints out a list using `/dev/by-id` and their partition listings. This can be used to fill out `/etc/fstab` in a more reliable way than their `/dev/sdX` style names.
 
+
+Simulate Silent Bit Rot (Random Silent Storage Corruption)
+----------------------------------------------------------
+
+* From this [r/DataHoarder Thread](https://www.reddit.com/r/DataHoarder/comments/2c5b54/how_can_i_simulate_silent_data_corruption/)
+```sh
+while true; do dd if=/dev/urandom of=/dev/sdX bs=1 count=1 seek=$RANDOM; sleep 1; done;
+```
