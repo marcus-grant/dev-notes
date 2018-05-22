@@ -18,3 +18,6 @@ https://siongui.github.io/2017/04/28/command-line-argument-in-golang-test/
 References
 ----------
 
+5. [Neil Lyons: Mocking Command Line Flags & STDIN in Go][05]
+
+[05]: https://blog.neillyons.io/mocking-command-line-flags-and-stdin-in-go/ "Neil Lyons: Mocking Command Line Flags & STDIN in Go"
