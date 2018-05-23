@@ -321,6 +321,11 @@ Running, `yarn develop` and going to [http://localhost:8000/hello-world][21] wil
 
 
 
+New Learnings from FreeCodeCamp
+===============================
+
+
+
 
 ## References
 [1]: https://www.gatsbyjs.org/blog/2017-07-19-creating-a-blog-with-gatsby/ "GatsbyJS Docs: Creating a Blog Tutorial"
@@ -332,6 +337,8 @@ Running, `yarn develop` and going to [http://localhost:8000/hello-world][21] wil
 [7]: https://github.com/wooorm/remark "Github: wooorm/remark"
 [8]: https://www.howtographql.com/ "How to GraphQL Tutorials"
 [9]: https://www.gatsbyjs.org/docs/node-apis/ "Gatsby: Node API Specifications"
+[10]: https://medium.freecodecamp.org/how-to-build-a-react-and-gatsby-powered-blog-in-about-10-minutes-625c35c06481 "FreeCodeCamp: React & Gatsby Powered Blog in 10 Minutes"
+[11]: https://medium.freecodecamp.org/how-to-build-a-responsive-blog-design-with-bulma-css-c2257a17c16b "FreeCodeCamp: Style a Blog Using Bulma"
 [20]: http://localhost:8000 "Dev Server Address"
 [21]: http://localhost:8000/hello-world "Dev Server, User Created Post"
 
@@ -344,3 +351,5 @@ Running, `yarn develop` and going to [http://localhost:8000/hello-world][21] wil
 7. [Github: Remark][7]
 8. [HowTo GraphQL Tutorials][8]
 9. [Gatsby: Node API Specifications][9]
+10. [FreeCodeCamp: React & Gatsby Powered Blog in 10 Minutes][10]
+11. [FreeCodeCamp: Style a Blog Using Bulma][11]
