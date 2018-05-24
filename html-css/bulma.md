@@ -220,25 +220,104 @@ First Project: A Bulma Documentation Site
 * The new `index.html` should look like this:
 ```html
 <body>
-        <section class="hero is-fullheight has-background-black">
-            <div class="hero-body">
-                <div class="container">
-                    <figure class="image center">
-                        <img src="images/bulma-logo-white.png" style="max-width: 512px;">
-                    </figure>
-                </div>
+    <section class="hero is-fullheight has-background-black">
+        <div class="hero-body">
+            <div class="container">
+                <figure class="image center">
+                    <img src="images/bulma-logo-white.png" style="max-width: 512px;">
+                </figure>
             </div>
-        </section>
-	</body>
+        </div>
+    </section>
+</body>
 ```
 
 * It should now look like this:
 ![Render of Completed Hero Section of Documentation Page][i02]
 
 
-### Adding a New Section
+Adding a New Section
+--------------------
+
+* Think of `section`s as the highest (in hierarchy) seperating containers in the semantics of these elements
+* Add a new section
+* In that section, which is below the hero element, is where some columns with some text boxes are going to be held that will give summary information about different parts of the bulma UI kit.
+* Within this new section, it would be nice if the text boxes would have more horizontal boxes laid out to fill available screen width, *(and reduce the number if there's not enough)*.
+* This is done by first enclosing the section in a `container`.
+    * This is to create a new flexbox container to dynamically lay out all nested items by their own internal sets of rules independent of the outside ones.
+* But crucially, the boxes should be placed within `column`s
+
+```html
+<!--- text box/card section -->
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <!-- Text Cards Go Here -->
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+* Enabling the debugger stylesheet, this is what should be visible:
+
+![Debugging Render of Empty Column Section][i03]
+
+* Now the new empty `column` is visible inside of the new `columns` container
+* Then to add all the columns that are desired, just add new copies of the `column` div inside the `columns` div.
+* Then just fill those divs with the text desired.
+* This looks a bit uninteresting though, so maybe add some flavor to each `column`.
+* One useful one that is to be used here is the `notification` class.
+* Now the new section should look like this:
+```html
+<div class="columns">
+    <div class="column">
+        <div class="notification">
+            Bulma is a modern CSS framework from @jgthms, based on Flexbox.
+            Using Bulma, we can describe our website's design using just classes. ᕕ( ᐛ )ᕗ
+        </div>
+    </div>
+    <div class="column">
+        <div class="notification">
+            Flexbox is a CSS spec that makes sectioning and aligning more natural.
+            We don't need to know Flexbox but it's how Bulma works behind-the-scenes. ⦤(^ー^)⦥
+        </div>
+    </div>
+    <div class="column">
+        <div class="notification">
+            Instead of writing our CSS per-element, we can use predefined classes.
+            With enough classes, we can describe our website design using semantics. ٩(^ᴗ^)۶
+        </div>
+    </div>
+</div>
+```
+* Which should look like this:
+![Three new columns with text using notification style][i04]
+
+* And responsiveness will already be built in by invoking these style classes, try resizing the width of the browser window.
+    * The `columns` container should shrink to a minimum of 1 column wide of text boxes.
+    * The `columns` container should expand to a maximum of 3 column wide of thext boxes.
+
+* `notification` can be modified to, for example, `is-primary` to change the color of the text box to whatever the defined primary color is
+    * Fun fact: the default primary is the same green color of Bulma's *(from DBZ)* hair.
 
 
+Colors
+------
+
+* The site looks rather drab at the moment, I like minimalism and monochrome styles but even they can be made to look better.
+* Let's focus on color here though.
+* Start by removing the hero section's background color (`has-background-black`)
+* That will leave the bacgkround white, but the logo is white so it isn't visible.
+* There's another logo that's colorful in the file `images/bulma-logo.png`.
+* It's a bit big so change the size attribute to `style="max-width: 160px;"`
+* Then give the hero, `has-bacgkround-white` as a class to make it look more clean
+* Now let's give each column their own thematic modifiers:
+    * `is-info`
+    * `is-primary`
+    * `is-warning`
+* 
 
 
 
@@ -252,3 +331,5 @@ References
 
 [i01]: ./pics/scrimba-bulma-docs-page-initial.png "Screenshot of Initial Documentation Page HTML"
 [i02]: ./pics/scrimba-bulma-docs-page-hero.png "Render of Completed Hero Section of Documentation Page"
+[i03]: ./pics/scrimba-bulma-docs-page-blank-columns.png "Debugging Render of Empty Column Section"
+[i04]: ./pics/scrimba-bulma-docs-page-three-columns.png "Three new columns with text using notification style"
