@@ -317,9 +317,51 @@ Colors
     * `is-info`
     * `is-primary`
     * `is-warning`
-* 
+* The html would then look something like this:
+```html
+<div class="columns">
+    <div class="column">
+        <div class="notification is-info">
+            <p class="is-size-5">
+                Bulma is a modern CSS framework from @jgthms, based on Flexbox.
+                Using Bulma, we can describe our website's design using just classes. ᕕ( ᐛ )ᕗ
+            </p>
+        </div>
+    </div>
+    <div class="column">
+        <div class="notification is-primary">
+            <p class="is-size-5">
+                Flexbox is a CSS spec that makes sectioning and aligning more natural.
+                We don't need to know Flexbox but it's how Bulma works behind-the-scenes. ⦤(^ー^)⦥
+            </p>
+        </div>
+    </div>
+    <div class="column">
+        <div class="notification is-warning">
+            <p class="is-size-5">
+                Instead of writing our CSS per-element, we can use predefined classes.
+                With enough classes, we can describe our website design using semantics. ٩(^ᴗ^)۶
+            </p>
+        </div>
+    </div>
+</div>
+```
+![Three columns with colored notifications][i05]
 
-
+* Notice how more than just the bacgkround color is specified by the `is-` classes.
+    * Text color for example picks black or white based on which one produces the higher contrast with the background.
+    * Font weighting and other features get changed as well.
+* Applying the `has-text-white` class is placed after `is-warning` the text will be forced to the same white color of the other notification blocks.
+* Next to add purpose to the notification text boxes, add an `h1` header element with the titles: `Bulma`, `Flexbox` & `Classes`.
+* Adjust the size of these elements using `is-size-4`, a size class that works for several elements and scales them to standard size classes.
+```html
+<div class="column">
+    <h1 class="title is-size-4">Bulma</h1>
+    <!-- rest of the previously defined bulma column -->
+</div>
+<!--- do the same for the other two columns with their respective titles -->
+```
+![Three columns with colors and titles][i06]
 
 
 References
@@ -333,3 +375,5 @@ References
 [i02]: ./pics/scrimba-bulma-docs-page-hero.png "Render of Completed Hero Section of Documentation Page"
 [i03]: ./pics/scrimba-bulma-docs-page-blank-columns.png "Debugging Render of Empty Column Section"
 [i04]: ./pics/scrimba-bulma-docs-page-three-columns.png "Three new columns with text using notification style"
+[i05]: ./pics/scrimba-bulma-docs-page-three-columns-with-colors.png "Three columns with colored notifications"
+[i06]: ./pics/scrimba-bulma-docs-page-three-columns-with-colors-titles.png "Three columns with colors and titles"
