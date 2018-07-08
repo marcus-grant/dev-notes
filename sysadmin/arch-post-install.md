@@ -83,7 +83,16 @@ User Applications
         * If I want privacy I'll use firefox or brave.
         * When I want full features I'll use chrome
         * Chromium has a lot of useful features from Chrome incompatible due to its open source nature, *(chromecast, some applications, etc.)* so it doesn't make sense to me to use Chromium, if I want more speed or privacy I'll use the other two over chromium.
-        *
+        * `trizen -S google-chrome`
+    * Firefox
+      * These days it's one of the faster and less memory hungry browsers that still has *decent* addon support
+      * `sudo pacman -S firefox`
+    * Brave
+      * Faster than all others when there's a lot of trackers and ads on screen and quite stripped down
+      * Still maturing but an increasingly interesting browser.
+      * New model for compensating content creators and advertisers based on their BAT cryptocurrency token.
+      * `sudo trizen -S brave`.
+      
 
 
 Miscallaneous
