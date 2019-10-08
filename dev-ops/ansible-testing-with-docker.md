@@ -20,10 +20,25 @@ Since we've been over why it can be really tricky to actually run a docker conta
 docker run -v /var/run/docker.sock:/var/run/docker.sock # ...
 ```
 
+### Docker in Docker
+
+Since you can't nest docker instances, you have to do a work around. Instead of creating a docker container inside another, simulate the effect by passing the docker socket to the container so instead of running the docker host, inside another, it communicates with the parent docker host, while controlling it inside of it. This [issue][02] on molecule discusses it, and links to this [repository][03] that implements such a solution to test their ansible role.
+
+To summarize, simply bound the docker socket to the child container, so that when its docker daemon starts to manage containers, it simply passes the commands to the parent and although it will behave like it's managing *child* containers, it's actually managing *sibling* containers.
+
+`docker run -v /var/run/docker.sock:/var/run/docker.sock`
+
+There's also a good StackOverflow [solution][04] that goes over how this docker in docker method is acheived using the above bind-mounting of `docker.sock`.
+
 References
 ----------
 
 1. [~jpetazzo/Using Docker-in-Docker for your CI or testing environment? Think twice][01]
+2. [Github - Ansible/Molecule: Issue for nested docker containers in testing][02]
+4. [StackOverflow: Docker in Docker][04]
 
 
 [01]: https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/ "~jpetazzo/Using Docker-in-Docker for your CI or testing environment? Think twice"
+[02]: https://github.com/ansible/molecule/issues/1322 "Github - Ansible/Molecule: Issue for nested docker containers in testing"
+[03]: https://github.com/ome/ansible-role-prometheus/blob/0.2.0/molecule.yml "Github ome/ansible-role-prometheus: molecule.yml"
+[04]: https://stackoverflow.com/questions/27879713/is-it-ok-to-run-docker-from-inside-docker "StackOverflow: Docker in Docker"
