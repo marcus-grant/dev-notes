@@ -30,6 +30,7 @@ To summarize, simply bound the docker socket to the child container, so that whe
 
 There's also a good StackOverflow [solution][04] that goes over how this docker in docker method is acheived using the above bind-mounting of `docker.sock`.
 
+**NOTE** : I still can't seem to get this to run properly inside molecule, I've tried running the container in privileged mode and without but I can't get it to work, it might have to do with overlay2 as the driver. I also can't reliably get the molecule scripts to give helpful output or run reliably while reinstalling the python env. It's inconclusive what the problem is in molecule, it might just be a dependency problem which is always seemingly frustrating in molecule.
 References
 ----------
 
