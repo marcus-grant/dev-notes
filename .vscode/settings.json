@@ -1,0 +1,41 @@
+{
+    "cSpell.ignoreWords": [
+        "ad",
+        "b",
+        "big",
+        "blockdev",
+        "blockdevs",
+        "c",
+        "cd",
+        "crypt",
+        "disk",
+        "e",
+        "f",
+        "flex",
+        "g",
+        "hdd",
+        "lsblk",
+        "mdv",
+        "multipath",
+        "originsub",
+        "part",
+        "physical",
+        "pool",
+        "poolname",
+        "private",
+        "sdb",
+        "sh",
+        "stratis",
+        "systemd",
+        "t",
+        "testfile",
+        "thindata",
+        "thinmeta",
+        "thinpool",
+        "urandom",
+        "wipefs"
+    ],
+    "cSpell.words": [
+        "systemd"
+    ]
+}
